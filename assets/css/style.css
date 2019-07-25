@@ -35,3 +35,11 @@ body {
 #add-train {
     background-color: firebrick;
 }
+
+#vineyard {
+    margin: 10px auto;
+}
+
+.picpadding {
+    background-color: maroon;
+}
