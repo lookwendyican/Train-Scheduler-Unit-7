@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Timesheet</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col sm12">
+                <div class="jumbotron bg-dark text-light text-center">
+                    <h1>Employee Data Management</h1>
+                    <h3>A Comprehensive Directory of Employee Billable Hours</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col sm12">
+                <div class="card mb-sm-4">
+                    <div class="card-header bg-dark text-light">Current Employees</div>
+                    <div class="card-body">
+                        <table class="table employees">
+                            <thead>
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Role</th>
+                                    <th>Start Date</th>
+                                    <th>Months Worked</th>
+                                    <th>Monthly Rate($)</th>
+                                    <th>Total Billed($)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col sm12">
+                <div class="card">
+                    <div class="card-header bg-dark text-light">Add Employee</div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <input class="form-control name" type="text" name="name" value="" />
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <input class="form-control role" type="text" name="role" value="" />
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date (MM/DD/YYYY)</label>
+                                <input class="form-control startDate" type="text" name="startDate" value="" />
+                            </div>
+                            <div class="form-group">
+                                <label>Monthly Rate</label>
+                                <input class="form-control monthlyRate" type="text" name="rate" value="" />
+                            </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-primary addEmployee">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+
+<script type="text/javascript">
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyAKiiN7-XZsuoAYFs5xHkzYYqqbtaiNBoU",
+        authDomain: "timesheet-29187.firebaseapp.com",
+        databaseURL: "https://timesheet-29187.firebaseio.com",
+        projectId: "timesheet-29187",
+        storageBucket: "",
+        messagingSenderId: "113181460482",
+        appId: "1:113181460482:web:f72ebfdfd466bc1a"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var database = firebase.database();
+    
+    $(document).ready(function(){
+        var name = "";
+        var role = "";
+        var startDate = "";
+        var monthlyRate = "";
+        
+        $('.addEmployee').on("click", function(e){
+            e.preventDefault();
+
+            var newEmployee = {
+                name: $('.name').val().trim(),
+                role: $('.role').val().trim(),
+                start: moment($('.startDate').val().trim(), "MM/DD/YYYY").format("X"),
+                rate: $('.monthlyRate').val().trim()
+            };
+
+            $('input').val("");
+
+            database.ref().push(newEmployee);
+
+            console.log(newEmployee);
+        });
+
+        database.ref().on("child_added", function(childSnap){
+            console.log(childSnap.val().name);
+            console.log(childSnap.val().role);
+            console.log(childSnap.val().start);
+            console.log(childSnap.val().rate);
+
+            var displayDate = moment(childSnap.val().start, "X").format("MM/DD/YYYY");
+            // var monthsWorked = moment(childSnap.val().start, "X").diff(moment(), "months") * -1;
+            var monthsWorked = moment().diff(moment(childSnap.val().start, "X"), "months");
+            console.log(monthsWorked);
+            var totalBilled = monthsWorked * childSnap.val().rate;
+
+            var tr = $("<tr>");
+
+            var tdName = $("<td>").text(childSnap.val().name);
+            var tdRole = $("<td>").text(childSnap.val().role);
+            var tdStart = $("<td>").text(displayDate);
+            var tdMonths = $("<td>").text(monthsWorked);
+            var tdRate = $("<td>").text(childSnap.val().rate);
+            var tdTotal = $("<td>").text(totalBilled);
+            
+            tr.append(tdName).append(tdRole).append(tdStart).append(tdMonths).append(tdRate).append(tdTotal);
+
+            $('.employees tbody').append(tr);
+        });
+    });
+</script>
+</html>

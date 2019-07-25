@@ -1,4 +1,37 @@
 body {
-    background-color: aquamarine;
+    background-image: url("../images/round.png");
+    margin: 0 auto;
     width: 960px;
+    margin: 0 auto;
+}
+
+/* .jumbotron {
+    text-align: center;
+    background-color: maroon;
+    color: white;
+} */
+
+
+.jumbotron{
+	background-image: url('../images/winetrain.jpeg');
+	background-size: cover;
+    background-repeat: no-repeat;
+    color: maroon;
+} 
+.card-header {
+    background-color: maroon;
+}
+
+.card-body {
+    background-color: darkkhaki;
+}
+
+.thead {
+    background-color: firebrick;
+    color: white;
+    font-weight: bold;
+}
+
+#add-train {
+    background-color: firebrick;
 }
