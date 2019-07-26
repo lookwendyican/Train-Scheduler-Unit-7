@@ -101,8 +101,16 @@ $(document).ready(function () {
 
     // Next Train
     //var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    var nextTrain = moment(nextTrain).format("hh:mm")
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    //var nextTrain = moment(currentTime, "h:mm A").add(tMinutesTillTrain, "minutes").format("h:mm A");
+
+    var nextTrain = moment(currentTime, "HH:mm").add(tMinutesTillTrain, "minutes").format("HH:mm");
+    console.log("ARRIVAL TIME: " + nextTrain);
+    
+    
+    // moment(nextTrain).format("hh:mm")
+    // console.log("ARRIVAL TIME: " + moment().add(tMinutesTillTrain, "minutes"));
+
+   
 
 
     var tr = $("<tr>");
