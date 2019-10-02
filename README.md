@@ -4,7 +4,8 @@ Creating a train schedule website using ajax, APIs and firebase to store data to
 This application consists of creating a application that incorporates Firebase to  host arrival and departure data. This app provides up-to-date information about various trains, such as their arrival times and how many minutes remain until they arrive at their station.  It retrieves and manipulates the data with Moment.js. 
 
 ### Link 
-https://lookwendyican.github.io/Train-Scheduler-Unit-7/
+
+Please click on the [Train Scheduler ](https://lookwendyican.github.io/Train-Scheduler-Unit-7/) to start riding down your favorite Wine Valley!
 
 ### Requirements 
 ##### Input Table where user submits
